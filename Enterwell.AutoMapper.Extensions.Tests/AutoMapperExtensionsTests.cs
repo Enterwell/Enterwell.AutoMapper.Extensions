@@ -153,16 +153,27 @@ namespace Enterwell.AutoMapper.Extensions.Tests
             {
                 cfg.CreateMap<MockSimpleEntitySource, MockComposedEntityDestination>()
                     .MapProperty(dst => dst.DestinationPropOne, src => src.SourcePropOne)
-                    .MapCompositePropertyRequired(dst => dst.AdditionalRequiredProperty);
+                    .MapCompositeAll(typeof(MockComposedEntitySource));
             }).CreateMapper();
 
-            const string additionalPropertyWrongType = "String instead of DateTime";
+            var source = new MockSimpleEntitySource
+            {
+                SourcePropOne = 1,
+                CommonPropOne = Guid.NewGuid().ToString()
+            };
 
-            var source = new MockSimpleEntitySource();
+            var composedSource = new MockComposedEntitySource
+            {
+                AdditionalRequiredProperty = DateTime.Now,
+                SecondAdditionalOptionalProperty = Guid.NewGuid().ToString()
+            };
 
-            var exception = Record.Exception(() => source.MapComposeTo<MockComposedEntityDestination>(mapper, additionalPropertyWrongType));
+            var destination = source.MapComposeTo<MockComposedEntityDestination>(mapper, composedSource);
 
-            Assert.NotNull(exception);
+            Assert.Equal(destination.CommonPropOne, source.CommonPropOne);
+            Assert.Equal(destination.DestinationPropOne, source.SourcePropOne);
+            Assert.Equal(destination.AdditionalRequiredProperty, composedSource.AdditionalRequiredProperty);
+            Assert.Equal(destination.SecondAdditionalOptionalProperty, composedSource.SecondAdditionalOptionalProperty);
         }
     }
 }
