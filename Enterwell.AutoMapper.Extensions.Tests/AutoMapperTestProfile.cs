@@ -13,7 +13,8 @@ namespace Enterwell.AutoMapper.Extensions.Tests
         /// </summary>
         public AutoMapperTestProfile()
         {
-            this.CreateMap<MockEntitySource, MockEntityDestination>();
+            this.CreateMap<MockSimpleEntitySource, MockSimpleEntityDestination>()
+                .MapProperty(dst => dst.DestinationPropOne, src => src.SourcePropOne);
         }
     }
 }
