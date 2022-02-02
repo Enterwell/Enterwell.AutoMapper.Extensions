@@ -1,39 +1,18 @@
 using System;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
 using Xunit;
 
 namespace Enterwell.AutoMapper.Extensions.Tests
 {
+
     /// <summary>
     /// Tests for AutoMapper extensions.
     /// </summary>
-    /// <seealso cref="Xunit.IClassFixture&lt;Enterwell.AutoMapper.Extensions.Tests.AutoMapperFixture&gt;" />
-    public class AutoMapperExtensionsTests//: IClassFixture<AutoMapperFixture>
+    public class AutoMapperExtensionsTests
     {
-        private readonly AutoMapperFixture fixture;
-
-        ///// <summary>
-        ///// Initializes a new instance of the <see cref="AutoMapperExtensionsTests"/> class.
-        ///// </summary>
-        ///// <param name="fixture">The fixture.</param>
-        ///// <exception cref="System.ArgumentNullException">fixture</exception>
-        //public AutoMapperExtensionsTests(AutoMapperFixture fixture)
-        //{
-        //    this.fixture = fixture ?? throw new ArgumentNullException(nameof(fixture));
-        //}
-
-        ///// <summary>
-        ///// Tests mapping validation for test fixture.
-        ///// </summary>
-        //[Fact]
-        //public void AutoMapperExtensionsTests_MappingValidation()
-        //{
-        //    var exception = Record.Exception(() => this.fixture.Mapper.ConfigurationProvider.AssertConfigurationIsValid());
-        //    Assert.Null(exception);
-        //}
-
+        /// <summary>
+        /// Tests MapProperty extension.
+        /// </summary>
         [Fact]
         public void AutoMapperExtensionsTests_MapProperty()
         {
@@ -52,6 +31,9 @@ namespace Enterwell.AutoMapper.Extensions.Tests
             Assert.Equal(source.SourcePropOne, dst.DestinationPropOne);
         }
 
+        /// <summary>
+        /// Tests MapPropertyFunc extension.
+        /// </summary>
         [Fact]
         public void AutoMapperExtensionsTests_MapPropertyFunc()
         {
@@ -102,7 +84,7 @@ namespace Enterwell.AutoMapper.Extensions.Tests
         }
 
         /// <summary>
-        /// Tests map with additional required property that is missing.
+        /// Tests MapCompose with additional required property that is missing.
         /// </summary>
         [Fact]
         public void AutoMapperExtensionsTests_MapComposeTo_RequiredCompositePropertyMissing()
@@ -122,7 +104,7 @@ namespace Enterwell.AutoMapper.Extensions.Tests
         }
 
         /// <summary>
-        /// Tests map with additional required property provided wrong type.
+        /// Tests MapCompose with additional required property provided wrong type.
         /// </summary>
         [Fact]
         public void AutoMapperExtensionsTests_MapComposeTo_CompositePropertyWrongType()
