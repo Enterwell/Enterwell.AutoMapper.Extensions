@@ -45,7 +45,7 @@ namespace Enterwell.AutoMapper.Extensions.Tests
                 cfg.CreateMap<MockSimpleEntitySource, MockSimpleEntityDestination>()
                     .MapProperty(dst => dst.DestinationPropOne, src => src.SourcePropOne);
             }).CreateMapper();
-            
+
             var commonProp = Guid.NewGuid().ToString();
             var srcProp = 5;
             var source = new MockSimpleEntitySource { CommonPropOne = commonProp, SourcePropOne = srcProp };
@@ -123,7 +123,7 @@ namespace Enterwell.AutoMapper.Extensions.Tests
             var source = new MockSimpleEntitySource();
 
             var exception = Record.Exception(() => source.MapComposeTo<MockComposedEntityDestination>(mapper));
-            
+
             Assert.NotNull(exception);
         }
 
@@ -147,6 +147,48 @@ namespace Enterwell.AutoMapper.Extensions.Tests
             var exception = Record.Exception(() => source.MapComposeTo<MockComposedEntityDestination>(mapper, additionalPropertyWrongType));
 
             Assert.NotNull(exception);
+        }
+
+        /// <summary>
+        /// Tests MapCompose second additional property optional.
+        /// </summary>
+        [Fact]
+        public void AutoMapperExtensionsTests_MapComposeTo_SecondPropertyOptional()
+        {
+            var mapper = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<MockSimpleEntitySource, MockComposedEntityDestination>()
+                    .MapProperty(dst => dst.DestinationPropOne, src => src.SourcePropOne)
+                    .MapCompositePropertyRequired(dst => dst.AdditionalRequiredProperty)
+                    .MapCompositeProperty(dst => dst.SecondAdditionalOptionalProperty, 1);
+            }).CreateMapper();
+
+            var source = new MockSimpleEntitySource();
+            var firstAdditionalProperty = DateTime.Now;
+            var destination = source.MapComposeTo<MockComposedEntityDestination>(mapper, firstAdditionalProperty);
+            Assert.Equal(destination.AdditionalRequiredProperty, firstAdditionalProperty);
+        }
+
+        /// <summary>
+        /// Tests MapCompose two additional properties required.
+        /// </summary>
+        [Fact]
+        public void AutoMapperExtensionsTests_MapComposeTo_TwoAdditionalPropertiesRequired()
+        {
+            var mapper = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<MockSimpleEntitySource, MockComposedEntityDestination>()
+                    .MapProperty(dst => dst.DestinationPropOne, src => src.SourcePropOne)
+                    .MapCompositePropertyRequired(dst => dst.AdditionalRequiredProperty)
+                    .MapCompositePropertyRequired(dst => dst.SecondAdditionalOptionalProperty, 1);
+            }).CreateMapper();
+
+            var source = new MockSimpleEntitySource();
+            var firstAdditionalProperty = DateTime.Now;
+            var secondAdditionalProperty = Guid.NewGuid().ToString();
+            var destination = source.MapComposeTo<MockComposedEntityDestination>(mapper, firstAdditionalProperty, secondAdditionalProperty);
+            Assert.Equal(destination.AdditionalRequiredProperty, firstAdditionalProperty);
+            Assert.Equal(destination.SecondAdditionalOptionalProperty, secondAdditionalProperty);
         }
 
         /// <summary>
