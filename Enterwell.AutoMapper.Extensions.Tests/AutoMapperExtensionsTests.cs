@@ -4,12 +4,36 @@ using Xunit;
 
 namespace Enterwell.AutoMapper.Extensions.Tests
 {
-
     /// <summary>
     /// Tests for AutoMapper extensions.
     /// </summary>
     public class AutoMapperExtensionsTests
     {
+        /// <summary>
+        /// Tests MapTo extension.
+        /// </summary>
+        [Fact]
+        public void AutoMapperExtensionsTests_MapTo()
+        {
+            var mapper = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<MockSimpleEntitySource, MockSimpleEntityDestination>()
+                    .ForMember(dst => dst.DestinationPropOne,
+                        opt => opt.MapFrom(src => src.SourcePropOne));
+            }).CreateMapper();
+
+            var source = new MockSimpleEntitySource
+            {
+                SourcePropOne = 5,
+                CommonPropOne = Guid.NewGuid().ToString()
+            };
+
+            var destination = source.MapTo<MockSimpleEntityDestination>(mapper);
+
+            Assert.Equal(source.SourcePropOne, destination.DestinationPropOne);
+            Assert.Equal(source.CommonPropOne, destination.CommonPropOne);
+        }
+
         /// <summary>
         /// Tests MapProperty extension.
         /// </summary>
