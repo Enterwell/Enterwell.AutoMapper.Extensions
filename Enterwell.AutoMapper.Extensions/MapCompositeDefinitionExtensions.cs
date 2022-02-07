@@ -96,9 +96,10 @@ namespace Enterwell.AutoMapper.Extensions
             this IMappingExpression<TSource, TDest> map,
             Type compositeType,
             int index = 0) =>
-            compositeType.GetProperties().ForAll(compositeProperty =>
-                map.ForMember(compositeProperty.Name,
-                    opt => opt.MapFrom((src, dest, _, ctx) =>
+            Array.ForEach(compositeType.GetProperties(),
+                compositeProperty =>
+                    map.ForMember(compositeProperty.Name,
+                        opt => opt.MapFrom((src, dest, _, ctx) =>
                         compositeProperty.GetValue(ctx.GetCompositePropertyRequired(compositeType, index)))));
 
         /// <summary>

@@ -66,8 +66,8 @@ namespace Enterwell.AutoMapper.Extensions
         public static IMappingExpression<TSource, TDest> MapPropertyFunc<TSource, TDest, TMemberDest, TResult>(
             this IMappingExpression<TSource, TDest> map,
             Expression<Func<TDest, TMemberDest>> dest,
-            Func<TSource, IRuntimeMapper, TResult> sourceFunc) =>
-            map.ForMember(dest, opt => opt.MapFrom((source, unused1, unused2, ctx) => sourceFunc(source, ctx.Mapper)));
+            Func<TSource, IMapper, TResult> sourceFunc) =>
+            map.ForMember(dest, opt => opt.MapFrom((source, unused1, unused2, mapper) => sourceFunc(source, mapper)));
 
         /// <summary>
         /// An IMappingExpression&lt;TSource,TDest&gt; extension method that maps property to source
