@@ -69,7 +69,6 @@ namespace Enterwell.AutoMapper.Extensions
             Func<TSource, IMapper, TResult> sourceFunc) =>
             map.ForMember(dest, opt => opt.MapFrom((source, unused1, unused2, mapper) => sourceFunc(source, mapper)));
 
-
         /// <summary>
         /// An IMappingExpression&lt;TSource,TDest&gt; extension method that maps property to source
         /// member.
